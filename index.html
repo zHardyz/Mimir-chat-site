@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIMIR - AI Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Banner horizontal com artwork -->
+        <div class="banner-container">
+            <img src="assets/artwork.png" alt="MIMIR Artwork" class="banner-image">
+            <div class="banner-overlay">
+                <h1>MIMIR</h1>
+                <p class="subtitle">AI Futurista & Inovador</p>
+            </div>
+        </div>
+
+        <!-- Área de chat -->
+        <div class="chat-messages" id="chat-messages">
+            <!-- Mensagem de boas-vindas inicial -->
+            <div class="message mimir-message">
+                <div class="message-avatar">
+                    <img src="assets/artwork.png" alt="MIMIR">
+                </div>
+                <div class="message-bubble">
+                    <p>Olá, viajante do futuro. Eu sou MIMIR, seu guia através das fronteiras da inovação e tecnologia. Como posso iluminar seu caminho hoje?</p>
+                    <span class="message-time" id="welcome-time"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de input -->
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="message-input" 
+                    placeholder="Digite sua mensagem..."
+                    rows="1"
+                    maxlength="1000"
+                ></textarea>
+                <button id="send-button" class="send-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                    </svg>
+                </button>
+            </div>
+            <div class="typing-indicator" id="typing-indicator">
+                <span>MIMIR está pensando</span>
+                <div class="dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

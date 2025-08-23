@@ -1,0 +1,31 @@
+{
+  "name": "mimir-chat",
+  "version": "1.0.0",
+  "description": "MIMIR - AI Chat Futurista com interface minimalista",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Build não necessário para este projeto'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "groq",
+    "netlify",
+    "serverless",
+    "futurista"
+  ],
+  "author": "MIMIR Team",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/mimir-chat.git"
+  }
+}
