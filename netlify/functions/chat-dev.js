@@ -39,11 +39,11 @@ exports.handler = async (event, context) => {
 
         // Respostas simuladas para desenvolvimento
         const responses = [
-            "Interessante pergunta! Como um guardião do conhecimento futuro, vejo que você está explorando as fronteiras da inovação. O que mais te intriga sobre esse tema?",
-            "Fascinante! A tecnologia que você menciona representa exatamente o tipo de avanço que moldará nosso futuro. Como você imagina que isso se desenvolverá nos próximos anos?",
-            "Excelente observação! Você está tocando em um dos pilares fundamentais da inovação tecnológica. Que aspectos específicos você gostaria de explorar mais profundamente?",
-            "Ah, um viajante curioso! Essa é uma das questões mais intrigantes que enfrentamos na fronteira da tecnologia. O que te levou a essa reflexão?",
-            "Perfeito! Você está navegando pelas mesmas correntes de inovação que eu monitoro constantemente. Que direção você acha que isso nos levará?"
+            "Haha, boa pergunta! Mas não vou ficar falando muito sobre mim não, tá?",
+            "Porra, que pergunta interessante! Mas eu sou mais de falar sobre outras coisas, sabe?",
+            "Caralho, você é direto mesmo! Gosto disso. Mas vamos falar de outra coisa?",
+            "Puta que pariu, que pergunta! Mas eu não sou muito de falar sobre mim não.",
+            "Hmm, interessante... Mas eu prefiro falar sobre outras coisas, tá ligado?"
         ];
 
         // Selecionar resposta aleatória
@@ -67,7 +67,7 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers,
             body: JSON.stringify({
-                reply: 'Modo desenvolvimento ativo! Esta é uma resposta simulada. Configure sua API key para respostas reais.'
+                reply: 'Porra, tô em modo desenvolvimento ainda! Configure a API key pra eu funcionar direito, caralho!'
             })
         };
     }
