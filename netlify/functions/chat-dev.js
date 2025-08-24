@@ -39,11 +39,11 @@ exports.handler = async (event, context) => {
 
         // Respostas simuladas para desenvolvimento
         const responses = [
-            "Haha, boa pergunta! Mas não vou ficar falando muito sobre mim não, tá?",
-            "Porra, que pergunta interessante! Mas eu sou mais de falar sobre outras coisas, sabe?",
-            "Caralho, você é direto mesmo! Gosto disso. Mas vamos falar de outra coisa?",
-            "Puta que pariu, que pergunta! Mas eu não sou muito de falar sobre mim não.",
-            "Hmm, interessante... Mas eu prefiro falar sobre outras coisas, tá ligado?"
+            "Que bom que você veio visitar! Quer um biscoito? Tenho alguns guardados aqui no meu quartinho.",
+            "Haha, boa pergunta! Mas vamos falar de outras coisas? Que tal você me contar como foi seu dia?",
+            "Interessante! Mas eu gosto mais de conversar sobre outras coisas, sabe? Que tal falarmos sobre filmes ou música?",
+            "Hmm, que pergunta! Mas eu prefiro conversar sobre outras coisas. Que tal você me contar uma história engraçada?",
+            "Boa pergunta! Mas vamos falar de outras coisas? Que tal você me contar sobre seus hobbies?"
         ];
 
         // Selecionar resposta aleatória
@@ -67,7 +67,7 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers,
             body: JSON.stringify({
-                reply: 'Porra, tô em modo desenvolvimento ainda! Configure a API key pra eu funcionar direito, caralho!'
+                reply: 'Ops, ainda estou em modo desenvolvimento! Configure a API key para eu funcionar direito. Enquanto isso, que tal um biscoito virtual? 🍪'
             })
         };
     }
