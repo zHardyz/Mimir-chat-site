@@ -564,6 +564,41 @@
                 font-size: 16px !important; /* Força tamanho para evitar zoom */
             }
         }
+
+        /* Melhorias específicas para mobile - scroll */
+        @media (max-width: 768px) {
+            .chat-messages {
+                -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
+                overscroll-behavior: contain; /* Evita scroll da página */
+            }
+            
+            /* Melhorar performance do scroll no mobile */
+            .message {
+                will-change: transform;
+                transform: translateZ(0); /* Força aceleração de hardware */
+            }
+            
+            /* Otimizar animações no mobile */
+            .messageSlideIn {
+                animation-duration: 0.3s; /* Mais rápido no mobile */
+            }
+        }
+
+        /* Melhorias para telas muito pequenas */
+        @media (max-width: 480px) {
+            .chat-messages {
+                padding-bottom: 0.2rem; /* Menos padding no final */
+            }
+            
+            .message {
+                margin-bottom: 1rem; /* Menos espaço entre mensagens */
+            }
+            
+            /* Scroll mais responsivo em telas pequenas */
+            .chat-messages::-webkit-scrollbar {
+                width: 2px; /* Scroll mais fino */
+            }
+        }
     </style>
 </head>
 <body>
@@ -644,6 +679,8 @@
         // Estado da aplicação
         let isProcessing = false;
         let conversationHistory = [];
+        let userIsScrolling = false;
+        let scrollTimeout = null;
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
@@ -657,7 +694,35 @@
             elements.messageInput.style.maxHeight = '120px';
             elements.messageInput.addEventListener('input', autoResizeTextarea);
             elements.messageInput.focus();
+            
+            // Detectar se é mobile
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                setupMobileOptimizations();
+            }
+            
             console.log('🚀 Mimir Chat inicializado');
+        }
+
+        // Configurações específicas para mobile
+        function setupMobileOptimizations() {
+            // Lidar com teclado virtual
+            let initialViewportHeight = window.innerHeight;
+            
+            window.addEventListener('resize', () => {
+                const currentHeight = window.innerHeight;
+                const heightDifference = initialViewportHeight - currentHeight;
+                
+                // Se a altura diminuiu significativamente, provavelmente o teclado abriu
+                if (heightDifference > 150) {
+                    // Aguardar um pouco e fazer scroll para o final
+                    setTimeout(() => {
+                        if (isNearBottom()) {
+                            scrollToBottomImmediate();
+                        }
+                    }, 300);
+                }
+            });
         }
 
         // Configurar event listeners
@@ -672,8 +737,43 @@
             elements.sendButton.addEventListener('click', sendMessage);
             elements.messageInput.addEventListener('input', updateSendButtonState);
             
-            const observer = new MutationObserver(() => {
-                setTimeout(scrollToBottom, CONFIG.SCROLL_DELAY);
+            // Detectar quando o usuário está scrollando
+            elements.chatMessages.addEventListener('scroll', () => {
+                userIsScrolling = true;
+                
+                // Limpar timeout anterior
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                
+                // Resetar flag após 1 segundo sem scroll
+                scrollTimeout = setTimeout(() => {
+                    userIsScrolling = false;
+                }, 1000);
+            });
+
+            // Listener para redimensionamento da tela
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Reajustar scroll após redimensionamento
+                    if (isNearBottom()) {
+                        scrollToBottomImmediate();
+                    }
+                }, 100);
+            });
+            
+            const observer = new MutationObserver((mutations) => {
+                // Só fazer scroll automático se o usuário não estiver scrollando manualmente
+                if (!userIsScrolling) {
+                    // Se estiver próximo do final, fazer scroll automático
+                    if (isNearBottom()) {
+                        const isMobile = window.innerWidth <= 768;
+                        const delay = isMobile ? 30 : 50; // Delay menor no mobile
+                        setTimeout(scrollToBottomImmediate, delay);
+                    }
+                }
             });
             
             observer.observe(elements.chatMessages, {
@@ -740,7 +840,10 @@
                 timestamp: new Date()
             });
             
-            scrollToBottom();
+            // Scroll imediato para mensagens do usuário (sempre)
+            const isMobile = window.innerWidth <= 768;
+            const delay = isMobile ? 5 : 10; // Delay menor no mobile
+            setTimeout(scrollToBottomImmediate, delay);
         }
 
         // Adicionar mensagem do Mimir
@@ -754,7 +857,12 @@
                 timestamp: new Date()
             });
             
-            scrollToBottom();
+            // Scroll para mensagens da Mimir (só se não estiver scrollando)
+            if (!userIsScrolling) {
+                const isMobile = window.innerWidth <= 768;
+                const delay = isMobile ? 50 : 100; // Delay menor no mobile
+                setTimeout(scrollToBottom, delay);
+            }
         }
 
         // Criar elemento de mensagem
@@ -839,7 +947,48 @@
 
         // Scroll para o final da conversa
         function scrollToBottom() {
-            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+            const chatMessages = elements.chatMessages;
+            const scrollHeight = chatMessages.scrollHeight;
+            const clientHeight = chatMessages.clientHeight;
+            const maxScrollTop = scrollHeight - clientHeight;
+            
+            // Detectar se é mobile
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // No mobile, usar scroll imediato para melhor performance
+                chatMessages.scrollTop = maxScrollTop;
+            } else {
+                // No desktop, usar scroll suave
+                chatMessages.scrollTo({
+                    top: maxScrollTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Scroll imediato para o final (sem animação)
+        function scrollToBottomImmediate() {
+            const chatMessages = elements.chatMessages;
+            const scrollHeight = chatMessages.scrollHeight;
+            const clientHeight = chatMessages.clientHeight;
+            const maxScrollTop = scrollHeight - clientHeight;
+            
+            chatMessages.scrollTop = maxScrollTop;
+        }
+
+        // Função para verificar se está no final da conversa (melhorada para mobile)
+        function isNearBottom() {
+            const chatMessages = elements.chatMessages;
+            const scrollTop = chatMessages.scrollTop;
+            const clientHeight = chatMessages.clientHeight;
+            const scrollHeight = chatMessages.scrollHeight;
+            
+            // No mobile, ser mais tolerante com a distância
+            const isMobile = window.innerWidth <= 768;
+            const threshold = isMobile ? 150 : 100;
+            
+            return scrollTop + clientHeight >= scrollHeight - threshold;
         }
 
         // Escapar HTML para segurança

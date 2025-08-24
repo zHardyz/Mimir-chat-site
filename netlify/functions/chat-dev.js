@@ -39,11 +39,11 @@ exports.handler = async (event, context) => {
 
         // Respostas simuladas para desenvolvimento
         const responses = [
-            "Que bom que você veio visitar! Quer um biscoito? Tenho alguns guardados aqui no meu quartinho.",
-            "Haha, boa pergunta! Mas vamos falar de outras coisas? Que tal você me contar como foi seu dia?",
-            "Interessante! Mas eu gosto mais de conversar sobre outras coisas, sabe? Que tal falarmos sobre filmes ou música?",
-            "Hmm, que pergunta! Mas eu prefiro conversar sobre outras coisas. Que tal você me contar uma história engraçada?",
-            "Boa pergunta! Mas vamos falar de outras coisas? Que tal você me contar sobre seus hobbies?"
+            "Que bom que você veio! Quer um biscoito? 🍪",
+            "Haha, boa pergunta! Mas vamos falar de outras coisas?",
+            "Interessante! Que tal falarmos sobre filmes ou música?",
+            "Hmm, que pergunta! Que tal você me contar uma história engraçada?",
+            "Boa pergunta! Que tal você me contar sobre seus hobbies?"
         ];
 
         // Selecionar resposta aleatória
